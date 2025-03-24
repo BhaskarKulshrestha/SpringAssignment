@@ -371,3 +371,52 @@ public class CustomerController {
     }
 }
 ```
+
+------------------------------------------------
+
+### How does the unique ID is generated ?
+In your Spring Boot REST API, the customerId is automatically generated as a unique primary key when a new customer is saved in the database. This is achieved using `JPA` (Java Persistence API) and `Hibernate`, which handle auto-incrementing the ID.
+
+### What is JPA ?
+
+JPA, or Java Persistence API, is a Java specification that provides a standard way to manage relational data in Java applications, acting as a bridge between object-oriented domain models and relational database systems.
+
+- What is does ?
+
+    - Object-Relational Mapping (ORM): JPA facilitates ORM, which is the process of mapping Java objects to database tables and vice-versa.
+    - Data Persistence: It provides a way to persist Java objects in a database.
+    - Standardization: JPA defines a standardized approach to working with databases, making it easier to write database-independent code.
+    - Simplification: It simplifies database operations by allowing developers to interact with databases using Java objects instead of writing SQL queries directly. 
+- key Concept
+  - Entities: Java objects that are mapped to database tables.
+  - Entity Manager: An API that manages the persistence of entities.
+  - Persistence Provider: An implementation of the JPA specification that provides the actual persistence logic.
+  - JPQL (Java Persistence Query Language): A query language for retrieving objects from the database. 
+- It is used in the Jakarta EE = > jakarta enterprise edition ==> akarta EE (formerly Java EE and Java 2 Platform, Enterprise Edition or J2EE) is a set of specifications and APIs that extend the Java Standard Edition (Java SE) with features for building enterprise applications, focusing on technologies like distributed computing and web services. 
+
+
+
+### What is hibernate ?
+
+Hibernate is an open-source Object-Relational Mapping (ORM) framework for Java that simplifies database interactions by mapping Java objects to database tables, allowing developers to work with data using objects instead of writing SQL queries directly. 
+
+- Object-Relational Mapping (ORM):
+Hibernate acts as a bridge between the object-oriented world of Java and the relational world of databases. 
+- Simplified Database Interactions:
+  It provides a high-level API for interacting with relational databases, reducing the need for developers to write complex SQL queries. 
+- Mapping Java Objects to Database Tables:
+  Hibernate maps Java classes to database tables and Java data types to SQL data types, allowing you to work with objects instead of raw SQL. 
+
+- Benefits of using Hibernate:
+  - Reduced boilerplate code: Hibernate handles the mapping and persistence logic, reducing the amount of code developers need to write.
+  - Improved productivity: Developers can focus on the application logic rather than database-specific details.
+  - Database independence: Hibernate can work with different relational databases, making your application more portable.
+  - Automatic transaction management and caching: Hibernate provides features like automatic transaction management and caching, which can improve performance and simplify development. 
+  
+- Hibernate and JPA:
+  Hibernate is an implementation of the Java Persistence API (JPA), a standard for persistence in Java applications. 
+- Hibernate is an open-source framework
+
+
+
+
