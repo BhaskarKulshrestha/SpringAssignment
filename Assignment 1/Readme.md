@@ -417,6 +417,355 @@ Hibernate acts as a bridge between the object-oriented world of Java and the rel
   Hibernate is an implementation of the Java Persistence API (JPA), a standard for persistence in Java applications. 
 - Hibernate is an open-source framework
 
+-----------------------------------------------------
+
+## Swagger Implementation:
+
+Swagger is a suite of open-source tools and a specification (now known as OpenAPI Specification) that helps developers design, document, and interact with RESTful APIs. It facilitates API development by providing tools for designing APIs, generating documentation, and creating client libraries. 
+
+- OpenAPI Specification (OAS):
+Swagger's core is the OpenAPI Specification (formerly known as the Swagger Specification), a standard format for describing APIs.
+  - Tools:
+  - Swagger provides a suite of tools built around the OpenAPI Specification, including:
+    - Swagger Editor: A browser-based editor for designing and documenting APIs using the OpenAPI specification.
+    - Swagger UI: An interactive tool for visualizing and interacting with APIs documented using the OpenAPI Specification.
+    - Swagger Codegen: A tool for generating server stubs and client libraries from an OpenAPI definition. 
+
+- Purpose:
+  Swagger helps developers in various stages of API development, including:
+    - Design: Designing APIs using a structured format.
+    - Documentation: Creating comprehensive and interactive API documentation.
+    - Testing: Testing APIs using the interactive documentation provided by Swagger UI.
+    - Code Generation: Generating server stubs and client libraries for various programming languages.
+    - Collaboration: Facilitating collaboration among developers by providing a common language for describing APIs
 
 
+# **1️⃣ Swagger Configuration - API Documentation**
+
+## **What is Swagger?**
+Swagger (OpenAPI) is a framework that **documents** and **tests** REST APIs interactively.  
+It generates a **UI-based API tester** where developers can view and execute API requests.
+
+---
+
+## **🔹 Step 1: Adding Dependencies in `pom.xml`**
+
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.0.2</version>
+</dependency>
+```
+
+### **What does it do?**
+- This dependency **enables Swagger UI** for your project.
+- It automatically scans all controllers (`@RestController`) and generates API documentation.
+- Provides an interactive web-based **API explorer** at `http://localhost:8080/swagger-ui.html`.
+
+---
+
+## **🔹 Step 2: Creating `SwaggerConfig.java`**
+
+📂 **File Path**: `src/main/java/com/customer/customer/config/SwaggerConfig.java`
+
+```java
+package com.customer.customer.config;
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SwaggerConfig {
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Customer Management API")
+                        .description("API for managing customers in a sales unit")
+                        .version("1.0.0")
+                        .contact(new Contact()
+                                .name("John Doe")
+                                .email("john.doe@example.com")
+                                .url("https://example.com"))
+                        .license(new License()
+                                .name("Apache 2.0")
+                                .url("https://www.apache.org/licenses/LICENSE-2.0")));
+    }
+}
+```
+
+### **What does each part do?**
+- `@Configuration` → Tells Spring Boot this is a configuration class.
+- `@Bean` → Registers the `OpenAPI` bean in the Spring context.
+- `new OpenAPI().info(new Info()...)` → Defines the **metadata** of the API:
+    - **Title**: "Customer Management API"
+    - **Description**: "API for managing customers in a sales unit"
+    - **Version**: "1.0.0"
+    - **Contact Info**:
+        - Name: "John Doe"
+        - Email: "john.doe@example.com"
+        - Website: "https://example.com"
+    - **License Info**:
+        - Name: "Apache 2.0"
+        - URL: "https://www.apache.org/licenses/LICENSE-2.0"
+
+---
+
+## **🔹 Step 3: Testing Swagger**
+
+1. Start the Spring Boot application.
+2. Open a browser and visit:  
+   **`http://localhost:8080/swagger-ui.html`**
+3. You'll see an interactive API explorer.
+
+### **Example of API Execution via Swagger:**
+- **GET /customers** → Fetch all customers.
+- **POST /customers** → Create a new customer.
+- **PUT /customers/{id}** → Update an existing customer.
+- **DELETE /customers/{id}** → Delete a customer.
+
+---
+
+# **2️⃣ Spring Boot Actuator - Monitoring Health, Info & Metrics**
+
+## **What is Spring Boot Actuator?**
+Spring Boot **Actuator** provides built-in endpoints for monitoring and managing the application.  
+It includes **health checks**, **application info**, and **performance metrics**.
+
+---
+
+## **🔹 Step 1: Adding Actuator Dependency in `pom.xml`**
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+```
+
+### **What does it do?**
+- Enables **monitoring** for your application.
+- Exposes several RESTful **endpoints** like:
+    - `/actuator/health` → Shows application health status.
+    - `/actuator/info` → Displays application metadata.
+    - `/actuator/metrics` → Shows performance metrics.
+
+---
+
+## **🔹 Step 2: Configuring Actuator in `application.properties`**
+
+📂 **File Path**: `src/main/resources/application.properties`
+
+```properties
+management.endpoints.web.exposure.include=health,info,metrics
+management.endpoint.health.show-details=always
+management.endpoint.info.enabled=true
+management.info.env.enabled=true
+```
+
+### **What does each property do?**
+- `management.endpoints.web.exposure.include=health,info,metrics`
+    - Exposes the `/actuator/health`, `/actuator/info`, and `/actuator/metrics` endpoints.
+- `management.endpoint.health.show-details=always`
+    - Displays **detailed health status** instead of just "UP" or "DOWN".
+- `management.endpoint.info.enabled=true`
+    - Enables the `/actuator/info` endpoint.
+- `management.info.env.enabled=true`
+    - Includes **environment variables** in the `/actuator/info` endpoint.
+
+---
+
+## **🔹 Step 3: Customizing the `/actuator/info` Endpoint**
+
+📂 **File Path**: `src/main/resources/application.properties`
+
+```properties
+info.app.name=Customer Management API
+info.app.version=1.0.0
+info.app.description=API for managing customer details
+```
+
+### **What does it do?**
+- Displays custom information in `/actuator/info`:
+    - App Name: "Customer Management API"
+    - Version: "1.0.0"
+    - Description: "API for managing customer details"
+
+---
+
+## **🔹 Step 4: Testing Actuator Endpoints**
+
+Start your app and open:
+
+1. **Health Check**
+   ```
+   http://localhost:8080/actuator/health
+   ```
+   **Example Response:**
+   ```json
+   {
+     "status": "UP"
+   }
+   ```
+
+2. **Application Info**
+   ```
+   http://localhost:8080/actuator/info
+   ```
+   **Example Response:**
+   ```json
+   {
+     "app": {
+       "name": "Customer Management API",
+       "version": "1.0.0",
+       "description": "API for managing customer details"
+     }
+   }
+   ```
+
+3. **Application Metrics**
+   ```
+   http://localhost:8080/actuator/metrics
+   ```
+
+---
+
+# **🚀 Summary of Implementations**
+
+| Feature | What it Does | URL |
+|---------|-------------|-----|
+| **Swagger UI** | Generates API documentation | `http://localhost:8080/swagger-ui.html` |
+| **Health Check** | Checks if the application is running | `http://localhost:8080/actuator/health` |
+| **App Info** | Shows application metadata | `http://localhost:8080/actuator/info` |
+| **Metrics** | Displays performance stats | `http://localhost:8080/actuator/metrics` |
+
+------------------------------------------------
+
+# **Understanding Beans in Spring Boot**
+
+In Spring Boot, **Beans** are objects managed by the **Spring IoC (Inversion of Control) Container**. These are instantiated, assembled, and managed by Spring.
+
+---
+
+## **1️⃣ Bean Annotations in Your Project**
+In Spring Boot, Beans are objects managed by the Spring IoC (Inversion of Control) Container. These are instantiated, assembled, and managed by Spring.
+
+How Beans Work in Your Project?
+Spring Beans are defined using annotations or configuration classes, and they are used throughout the application for dependency injection.
+
+### **🔹 `@Bean` in SwaggerConfig.java**
+```java
+@Bean
+public OpenAPI customOpenAPI() {
+    return new OpenAPI()
+            .info(new Info()
+                    .title("Customer Management API")
+                    .description("API for managing customers in a sales unit")
+                    .version("1.0.0")
+                    .contact(new Contact()
+                            .name("Your Name")
+                            .email("your.email@example.com")
+                            .url("https://yourwebsite.com"))
+                    .license(new License()
+                            .name("Apache 2.0")
+                            .url("https://www.apache.org/licenses/LICENSE-2.0")));
+}
+```
+### **📌 What is Happening Here?**
+- The method **`customOpenAPI()`** is marked with `@Bean`.
+- Spring will automatically manage this method and call it when required.
+- The returned object (`OpenAPI`) is stored in the **Spring Application Context** as a **Bean**.
+- Other components can **reuse** this object instead of creating a new instance.
+
+---
+
+## **2️⃣ Other Common Bean Annotations in Your Project**
+### **🔹 `@Component`**
+- Makes a class a Spring-managed **Bean**.
+- Example:
+  ```java
+  @Component
+  public class MyComponent {
+      public void doSomething() {
+          System.out.println("Component is working");
+      }
+  }
+  ```
+  This can be **autowired** into other classes.
+
+### **🔹 `@Service` (Business Logic Layer)**
+```java
+@Service
+public class CustomerService {
+    // Business logic for Customer operations
+}
+```
+- **A specialized `@Component` for service layer.**
+- It holds **business logic** and can be autowired.
+
+### **🔹 `@Repository` (Data Layer)**
+```java
+@Repository
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
+}
+```
+- Used in **DAO (Data Access Object) layer**.
+- Tells Spring this is a **database interaction class**.
+- Uses **Spring Data JPA** to interact with the database.
+
+### **🔹 `@Controller` (API Layer)**
+```java
+@RestController
+@RequestMapping("/api/customers")
+public class CustomerController {
+    @Autowired
+    private CustomerService customerService;
+}
+```
+- **Handles HTTP requests**.
+- Works as a **REST API controller**.
+
+---
+
+## **3️⃣ How Beans Interact in Your Project?**
+### **Example Flow (GET Customer by ID)**
+1. **Controller Calls Service**
+   ```java
+   @GetMapping("/{id}")
+   public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
+       return ResponseEntity.ok(customerService.getCustomerById(id));
+   }
+   ```
+2. **Service Calls Repository**
+   ```java
+   public Customer getCustomerById(Long id) {
+       return customerRepository.findById(id).orElseThrow();
+   }
+   ```
+3. **Repository Fetches from Database**
+   ```java
+   public interface CustomerRepository extends JpaRepository<Customer, Long> { }
+   ```
+
+### **Diagram Representation**
+```
+HTTP Request → Controller (@RestController) → Service (@Service) → Repository (@Repository) → Database
+```
+
+---
+
+## **📌 Key Takeaways**
+- `@Bean` → Manually define a Bean inside a Configuration class.
+- `@Component` → Generic Spring-managed Bean.
+- `@Service` → Business logic layer Bean.
+- `@Repository` → Data access layer Bean.
+- `@Controller` → API request handler.
+
+Would you like me to modify or add anything else in your project? 🚀
 
