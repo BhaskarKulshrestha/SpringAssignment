@@ -24,6 +24,20 @@ com
 
 ```
 
+
+```
+Project Dependencies:
+Spring Web (To create REST APIs)
+
+Spring Boot DevTools (For hot reloading during development)
+
+Spring Data JPA (For ORM and DB connectivity)
+
+MySQL Driver (To connect with MySQL)
+
+Lombok (To reduce boilerplate code)
+```
+
 ## How Spring Boot Works in This Project
 Spring Boot follows a layered architecture:
 
